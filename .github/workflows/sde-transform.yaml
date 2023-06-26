@@ -30,3 +30,4 @@ jobs:
         context: sde-transform
         tags: ${{ steps.login-ecr.outputs.registry }}/hreeder/glue-zkb-test/sde-transform:latest
         push: true
+        provenance: false
