@@ -28,6 +28,11 @@ data "aws_ecr_repository" "transformer" {
   name = "hreeder/glue-zkb-test/sde-transform"
 }
 
+data "aws_ecr_image" "transformer" {
+  repository_name = data.aws_ecr_repository.transformer.name
+  image_tag       = "latest"
+}
+
 module "transformer" {
   source = "terraform-aws-modules/lambda/aws"
 
@@ -36,7 +41,7 @@ module "transformer" {
 
   publish        = true
   create_package = false
-  image_uri      = "${data.aws_ecr_repository.transformer.repository_url}:latest"
+  image_uri      = "${data.aws_ecr_repository.transformer.repository_url}@${data.aws_ecr_image.transformer.image_digest}"
   package_type   = "Image"
   architectures  = ["x86_64"]
 
