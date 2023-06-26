@@ -6,6 +6,10 @@ on:
     - 'sde-transform/**'
     - '.github/workflows/sde-transform.yaml'
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   deploy:
     name: Build & Deploy
