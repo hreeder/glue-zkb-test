@@ -33,6 +33,16 @@ data "aws_ecr_image" "transformer" {
   image_tag       = "latest"
 }
 
+data "aws_iam_policy_document" "transformer" {
+  statement {
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+    ]
+    resources = ["${aws_s3_bucket.sde.arn}/*"]
+  }
+}
+
 module "transformer" {
   source = "terraform-aws-modules/lambda/aws"
 
@@ -44,6 +54,11 @@ module "transformer" {
   image_uri      = "${data.aws_ecr_repository.transformer.repository_url}@${data.aws_ecr_image.transformer.image_digest}"
   package_type   = "Image"
   architectures  = ["x86_64"]
+
+  attach_policy_json = true
+  policy_json        = data.aws_iam_policy_document.transformer.json
+
+  cloudwatch_logs_retention_in_days = 7
 
   allowed_triggers = {
     s3 = {
