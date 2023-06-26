@@ -4,6 +4,7 @@ on:
   push:
     paths:
     - 'sde-transform/**'
+    - '.github/workflows/sde-transform.yaml'
 
 jobs:
   deploy:
