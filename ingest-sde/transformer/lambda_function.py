@@ -6,6 +6,10 @@ import yaml
 s3 = boto3.resource('s3')
 
 def process_record(record):
+    print(json.dumps({
+        "event": "processing yaml file",
+        "s3": record['s3'],
+    }))
     bucket = record['s3']['bucket']['name']
     key = record['s3']['object']['key']
     key_prefix = key.rsplit(".", 1)[0]
